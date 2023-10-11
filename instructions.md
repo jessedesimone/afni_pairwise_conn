@@ -1,6 +1,18 @@
 # Instructions
-- create txt files for all roi_numb, roi_labels and roi_coord (3 different and corresponding spreadsheets)
-- create txt files for each network (i.e., each line will be a unique roi_label)
+## setup
+- in reference directory, create two text files: (1) roi_labels.txt; and (2) roi_centers.txt
+- roi_labels.txt: two columns: (1) roi number (i.e., 1..n); and (2) label (e.g., RH_DefaultA_pCunPCC)
+- roi_centers.txt: 3 columns representing (x,y,z) MNI coordinates and LPI (i.e., left=left) orientation for the corresponding ROI in roi_labels.txt (row 1 in roi_centers.txt corresponds to row 1 in roi_labels.txt)
+- see reference directory for example (MNI coordinates for Yeo connectivity atlas 17 network parcellation) https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/README.md
+- create text file for each network (e.g. default_mode.txt); each row will contain a unique roi label; column format is the same as roi_labels.txt
+
+
+
+
+
+
+
+
 
 
 ## subject-level analysis
