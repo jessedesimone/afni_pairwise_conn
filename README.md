@@ -1,6 +1,5 @@
 # afni_pairwise_conn
-Pairwise (roi-to-roi) connectivity analysis in AFNI
+[Change Log for this project](./CHANGELOG.md)
 
-```bash
-cat ${sub}_${roi}.1D > ${sub}_${network}.1D
-```
+## Instructions
+[Instructions for this project](./instructions.md)
