@@ -42,44 +42,54 @@ touch data/id_subj
 ```
 - Add each subject's unique identifier to the first column of id_subj
 
-
-
-
-
-
-
-
-
-
-## subject-level analysis
-
-- create spherical 6mm ROIs based on text file input (use the bash iter_two_lists.sh script) (3dUndump)
-- for each network, create ROI map (each subject will have an ROI map for 17 total networks)
-e.g. network 1
+## run main.sh driver
 ```bash
-3dcalc \
--a rFrontal+tlrc \
--b rParietal+tlrc \
--c rControl+tlrc \
--expr 'a+b*2+c*3' \
--prefix ${sub}_ROImap
+./src/main.sh
 ```
-### resample roi map
-```bash
-#resample roi to resolution of errts file
-3dresample -master ${errts_file} -rmode NN -prefix ${roi_dir}/${sub}_${roi}.nii -inset
-```
+- script will loop through each subject
+- runs src/roi_setup.tcsh to create masks for each roi
+- runs src/roi_map.tcsh to create final_roi_map.*
+- runs src/netcorr.tcsh to create whole-brain voxelwise z-score corrrelation maps, matrix files and correlation plots
 
-### 1D file creation
-- for each ROI, create individual 1D files for each ROI time series (3dmaskave or 3dROIstats) 
-```bash
-3dROIstats -quiet -mask_f2short -mask ${roi_dir}/${sub}_${roi}.nii ${errts_file} > ${roi_dir}/${sub}_${roi}.1D
 
-3dmaskave -mask ${sub}_${roi}.nii ${errts_file} > ${roi_dir}/${sub}_${roi}.1D 
-```
 
-- for each ROImap (above), concatenate all 1D files (from all ROIs) into single spreadsheet
+# NEXT STEP
+- for each network, concatenate all 1D files  into single spreadsheet
 - use code from above but replace -mask ${sub}_${roi}.nii with ${sub}_ROImap+tlrc; use .xls or .txt or .csv extension instead of 1D for output file
+- this will produce 17 files per subject
+
+
+
+
+
+'''
+## subject-level analysis
+# - create spherical 6mm ROIs based on text file input (use the bash iter_two_lists.sh script) (3dUndump)
+# - for each network, create ROI map (each subject will have an ROI map for 17 total networks)
+# e.g. network 1
+# ```bash
+# 3dcalc \
+# -a rFrontal+tlrc \
+# -b rParietal+tlrc \
+# -c rControl+tlrc \
+# -expr 'a+b*2+c*3' \
+# -prefix ${sub}_ROImap
+# ```
+# ### resample roi map
+# ```bash
+# #resample roi to resolution of errts file
+# 3dresample -master ${errts_file} -rmode NN -prefix ${roi_dir}/${sub}_${roi}.nii -inset
+# ```
+
+# ### 1D file creation
+# - for each ROI, create individual 1D files for each ROI time series (3dmaskave or 3dROIstats) 
+# ```bash
+# 3dROIstats -quiet -mask_f2short -mask ${roi_dir}/${sub}_${roi}.nii ${errts_file} > ${roi_dir}/${sub}_${roi}.1D
+
+# 3dmaskave -mask ${sub}_${roi}.nii ${errts_file} > ${roi_dir}/${sub}_${roi}.1D 
+# ```
+'''
+
 
 ### QC correlation matrix
 - create correlation matrix for each subject x network combination (17 total for each subject)

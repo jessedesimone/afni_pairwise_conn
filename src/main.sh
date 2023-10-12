@@ -162,11 +162,22 @@ do
             fi
         fi
 
+        mkdir -p 1d_files
+        ls roi_mask_* > _tmp_roi_mask_list.txt
+        sed -e 's!.nii.gz!!' _tmp_roi_mask_list.txt > _tmp_roi_mask_list2.txt
+        rm -rf _tmp_roi_mask_list.txt; mv _tmp_roi_mask_list2.txt _tmp_roi_mask_list.txt
+        ROI=`cat _tmp_roi_mask_list.txt `
+        echo "computing roi stats"
+        for roi in ${ROI[@]}; do
+            3dROIstats -quiet -mask_f2short -mask ${roi}.nii.gz errts.sub_01.anaticor+tlrc > 1d_files/${sub}_${roi}.1D
+            #3dmaskave -mask ${roi}.nii.gz errts.sub_01.anaticor+tlrc > 1d_files/${sub}_${roi}.1D
+        done
+
     else
         : 'terminate script if missing input files' 2>&1 | tee -a $log_file
         echo "!! ERROR: anat and/or epi infiles not found for $sub" 2>&1 | tee -a $log_file
         echo "terminating script" 2>&1 | tee -a $log_file
         exit 1
     fi
-
+echo "++ main.sh finished"
 done
