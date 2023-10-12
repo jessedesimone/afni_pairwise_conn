@@ -1,7 +1,9 @@
 # Instructions
 ## Clone git repository & configure directories
 - Fork repository to your GitHub account and clone repository to local machine <br/> 
-```git clone git@github.com:*username*/afni_pairwise_conn.git```
+```bash
+git clone git@github.com:*username*/afni_pairwise_conn.git
+```
 - Navigate to src and open config_directories.sh
 - Update the paths to your package; you should really only need to update the top directory (i.e., location where you downloaded the package)
 
@@ -24,7 +26,9 @@
 - For each subject add errts.*.anaticor+tlrc (epi error time series) and standard space anatomical image to the respective subdirectory
 - The anatomical file will be used for QC purposes
 - Create subject list using the following command: <br/>
-```bash touch data/id_subj```
+```bash
+touch data/id_subj
+```
 - Add each subject's unique identifier to the first column of id_subj
 
 
