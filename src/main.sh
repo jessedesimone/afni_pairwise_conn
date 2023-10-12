@@ -162,16 +162,29 @@ do
             fi
         fi
 
-        mkdir -p 1d_files
-        ls roi_mask_* > _tmp_roi_mask_list.txt
-        sed -e 's!.nii.gz!!' _tmp_roi_mask_list.txt > _tmp_roi_mask_list2.txt
-        rm -rf _tmp_roi_mask_list.txt; mv _tmp_roi_mask_list2.txt _tmp_roi_mask_list.txt
-        ROI=`cat _tmp_roi_mask_list.txt `
-        echo "computing roi stats"
-        for roi in ${ROI[@]}; do
-            3dROIstats -quiet -mask_f2short -mask ${roi}.nii.gz errts.sub_01.anaticor+tlrc > 1d_files/${sub}_${roi}.1D
-            #3dmaskave -mask ${roi}.nii.gz errts.sub_01.anaticor+tlrc > 1d_files/${sub}_${roi}.1D
-        done
+        #==========1d file creation==========
+        : 'run 1d_creator.sh'
+        : 'run script if outdir does not exist '
+        if [ ! -d "1d_files" ]; then
+            tcsh -c ${src_dir}/1d_creator.sh 2>&1 | tee -a $log_file
+        else
+            : 'if outdir does exist, check to see if number of outfiles matches
+            the specified number of ROI centers | only run if they do not match |
+            overwrite protection'
+            roi_in=$(grep -c ".*" ${ref_dir}/roi_centers.txt)
+            echo "++ number of ROIs = $roi_in" 2>&1 | tee -a $log_file
+            roi_in=$((roi_in))
+            roi_out=$(ls -l 1d_files/${sub}_roi_mask_*.1D | grep ^- | wc -l)
+            if [ "$roi_in" -eq "$roi_out" ]; then
+                echo "outfiles already exist | skipping step" 2>&1 | tee -a $log_file
+            else
+                echo "++ !!! OVERWRITING EXISTING DATASET | ROI time series files !!!" 2>&1 | tee -a $log_file
+                rm -rf 1d_files/${sub}_roi_mask_*.1D
+                echo "creating ROI time series files" 2>&1 | tee -a $log_file
+                tcsh -c ${src_dir}/1d_creator.sh 2>&1 | tee -a $log_file
+            fi
+
+        fi
 
     else
         : 'terminate script if missing input files' 2>&1 | tee -a $log_file

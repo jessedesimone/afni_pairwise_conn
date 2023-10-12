@@ -54,9 +54,13 @@ touch data/id_subj
 
 
 # NEXT STEP
-- for each network, concatenate all 1D files  into single spreadsheet
-- use code from above but replace -mask ${sub}_${roi}.nii with ${sub}_ROImap+tlrc; use .xls or .txt or .csv extension instead of 1D for output file
-- this will produce 17 files per subject
+- create concatenated 1dfiles containing the z-score for given roi across all subjects
+1dcat sub_01_roi_mask_001.1D sub_02_roi_mask_001.1D > ${all_subs}_roi_mask_001.1D
+- this will creeate n 1d files for n ROIs
+- then get average for each roi; put into 1D file
+- this will produce a single 1D file with the average time series for each ROI
+- then concatenate the averages for all ROIs in a given network
+- 17 total txt files; 1 per network; multiple ROIs in each
 
 
 
