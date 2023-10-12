@@ -1,10 +1,31 @@
 # Instructions
+## Clone git repository & configure directories
+- Fork repository to your GitHub account and clone repository to local machine <br/> 
+```git clone git@github.com:*username*/afni_pairwise_conn.git```
+- Navigate to src and open config_directories.sh
+- Update the paths to your package; you should really only need to update the top directory (i.e., location where you downloaded the package)
+
+## data preprocessing
+- Required input file is error time series (e.g., errts.*+tlrc) file from standard afni_proc.py preproccing pipeline 
+- I used the afni_proc.py anaticor option (Example 9b. Resting state analysis with ANATICOR) for data preprocessing so input files have the file name "errts.*subj*.anaticor+tlrc"
+- Any error time series file from afni_proc.py or FSL FEAT should work, but user will need to update the scripts within this package with the correct file naming
+- Error time series file should be aligned to standard MNI space (I used the MNI152_T1 template)
+
 ## setup
-- in reference directory, create two text files: (1) roi_labels.txt; and (2) roi_centers.txt
+### reference lists
+- in reference directory, create (or update existing) two text files: (1) roi_labels.txt; and (2) roi_centers.txt
 - roi_labels.txt: two columns: (1) roi number (i.e., 1..n); and (2) label (e.g., RH_DefaultA_pCunPCC)
 - roi_centers.txt: 3 columns representing (x,y,z) MNI coordinates and LPI (i.e., left=left) orientation for the corresponding ROI in roi_labels.txt (row 1 in roi_centers.txt corresponds to row 1 in roi_labels.txt)
 - see reference directory for example (MNI coordinates for Yeo connectivity atlas 17 network parcellation) https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/README.md
 - create text file for each network (e.g. default_mode.txt); each row will contain a unique roi label; column format is the same as roi_labels.txt
+
+### data
+- In the data directory, create a subdirectory for each subject 
+- For each subject add errts.*.anaticor+tlrc (epi error time series) and standard space anatomical image to the respective subdirectory
+- The anatomical file will be used for QC purposes
+- Create subject list using the following command: <br/>
+```bash touch data/id_subj```
+- Add each subject's unique identifier to the first column of id_subj
 
 
 
