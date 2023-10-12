@@ -19,6 +19,9 @@ touch $log_file
 echo "++ Start time: $dt" 2>&1 | tee $log_file
 
 #check dependencies
+#set the python virtual environment
+: 'depends on system | may not be needed'
+source ~/env/bin/activate
 : 'uncomment if you need to check dependencies
 code should run fine on current LRN systems'
 source dependencies.sh
@@ -26,6 +29,23 @@ source dependencies.sh
 #define roi coordinate files
 ilist=${ref_dir}/roi_centers.txt
 ilabtxt=${ref_dir}/roi_labels.txt
+
+#create anat mask file
+if [ ! -f ${nii_dir}/anat_mask.nii ]; then
+    : 'create mask if it does not already exist'
+    echo "++ creating mask of anatomical template" 2>&1 | tee -a $log_file
+    : 'mask the anatomical template'
+    3dcalc -a ${anat_template} -expr 'step(a)' -prefix ${nii_dir}/anat_mask0.nii
+    : 'find the errts input file for the first subject and resample to epi dimensions'
+    firstsub=$(head -n 1 ${data_dir}/id_subj)
+    3dresample -master ${data_dir}/$firstsub/errts.${firstsub}.anaticor+tlrc -rmode NN -prefix ${nii_dir}/anat_mask.nii -inset ${nii_dir}/anat_mask0.nii
+    : 'create erode mask for use in group processing'
+    fslmaths ${nii_dir}/anat_mask.nii -kernel sphere 3 -ero ${nii_dir}/anat_mask_ero.nii.gz
+    # clean up
+    rm -rf ${nii_dir}/anat_mask0.nii
+fi
+anat_mask=${nii_dir}/anat_mask.nii
+echo "++ output mask dataset $anat_mask"
 
 #define subjects
 echo "++ Starting subject-level analysis" 2>&1 | tee -a $log_file
@@ -46,6 +66,7 @@ do
     # copy some files
     cp $ilist ${data_dir}/${sub}/roi_centers.txt
     cp $ilabtxt ${data_dir}/${sub}/roi_labels.txt
+    cp $anat_mask ${data_dir}/${sub}/anat_mask.nii
     echo $sub > ${data_dir}/${sub}/subname.txt
     
     #enter directory
@@ -73,7 +94,7 @@ do
             tcsh -c ${src_dir}/roi_setup.tcsh 2>&1 | tee -a $log_file
         fi
 
-        sleep 5
+        sleep 2
 
         #==========ROI map==========
         echo "==========ROI map==========" 2>&1 | tee -a $log_file
@@ -112,6 +133,32 @@ do
                 rm -rf $outfile
                 echo "creating new ROI map" 2>&1 | tee -a $log_file
                 tcsh -c ${src_dir}/roi_map.tcsh 2>&1 | tee -a $log_file
+            fi
+        fi
+
+        sleep 2
+
+        #==========network correlation==========
+        echo "==========network correlation (voxelwise)==========" 2>&1 | tee -a $log_file
+        : 'run netcorr.tcsh'
+        : 'run script if outdir does not exist '
+        if [ ! -d NETCORR_000_INDIV ]; then
+            tcsh -c ${src_dir}/netcorr.tcsh 2>&1 | tee -a $log_file
+        else 
+            : 'if outdir does exist, check to see if number of outfiles matches
+            the specified number of ROI centers | only run if they do not match |
+            overwrite protection'
+            roi_in=$(grep -c ".*" ${ref_dir}/roi_centers.txt)
+            echo "++ number of ROIs = $roi_in" 2>&1 | tee -a $log_file
+            roi_in=$((roi_in))
+            roi_out=$(ls -l NETCORR_000_INDIV/WB_Z_ROI_*.nii.gz | grep ^- | wc -l)
+            if [ "$roi_in" -eq "$roi_out" ]; then
+                echo "outfiles already exist | skipping step" 2>&1 | tee -a $log_file
+            else
+                echo "++ !!! OVERWRITING EXISTING DATASET | final_roi_map.nii.gz !!!" 2>&1 | tee -a $log_file
+                rm -rf NETCORR_000_INDIV/WB_Z_ROI_*.nii.gz
+                echo "creating new newtwork correlation maps" 2>&1 | tee -a $log_file
+                tcsh -c ${src_dir}/netcorr.tcsh 2>&1 | tee -a $log_file
             fi
         fi
 

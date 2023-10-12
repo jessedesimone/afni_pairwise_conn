@@ -1,1 +1,3 @@
 data_proc/sub_0*/*
+logs/*
+.DS_Store

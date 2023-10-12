@@ -14,6 +14,16 @@ git clone git@github.com:*username*/afni_pairwise_conn.git
 - Error time series file should be aligned to standard MNI space (I used the MNI152_T1 template)
 
 ## setup
+### Configure python virtual environment
+- This package includes python source code from afni 
+- matplotlib package is required for netcorr.tcsh
+- For me, the terminal command is: 
+```bash
+source ~/env/bin/activate
+``` 
+- This is built into the main.sh script configuration so update as needed
+- The dependencies.sh script will check that matplotlib is installed and will exit if not
+
 ### reference lists
 - in reference directory, create (or update existing) two text files: (1) roi_labels.txt; and (2) roi_centers.txt
 - roi_labels.txt: two columns: (1) roi number (i.e., 1..n); and (2) label (e.g., RH_DefaultA_pCunPCC)
@@ -25,6 +35,7 @@ git clone git@github.com:*username*/afni_pairwise_conn.git
 - In the data directory, create a subdirectory for each subject 
 - For each subject add errts.*.anaticor+tlrc (epi error time series) and standard space anatomical image to the respective subdirectory
 - The anatomical file will be used for QC purposes
+- Store MNI template used in the afni_proc.py registration/warping procedure in nifti directory
 - Create subject list using the following command: <br/>
 ```bash
 touch data/id_subj
