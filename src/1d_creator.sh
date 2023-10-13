@@ -28,7 +28,7 @@ for roi in ${ROI[@]}; do
 done
 
 # ------------------ clean up --------------------------
-rm -rf ${tpref}*
+#rm -rf ${tpref}*
 rm -rf $odir/${tpref}*
 
 echo "++ 1d_creator.sh done"

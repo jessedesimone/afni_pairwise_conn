@@ -7,31 +7,33 @@
 echo "++ running 1d_handler.sh"
 
 # configuration
-vsub=`cat subname.txt`      #subj name
-vepi=errts.${vsub}.anaticor+tlrc        #epi infile
-odir=1d_files; mkdir -p $odir       #output directory
-tpref=_tmp      #temp file prefix
-opref=${vsub}     #output file prefix
+source config_directories.sh; mkdir -p $mat_out_dir   
+flist='id_subj'
+isub=`cat ${data_dir}/$flist`
+tpref='_tmp'
+topref='all_subs'
+opref='mean'
 
-# ------------------ create temp list of rois --------------------------
-firstsub=$(head -n 1 ${data_dir}/id_subj)       #find first sub
-- go into first sub folder
-- create tmp list of roi_masks_00*
-- for each roi in roi_mask tmp list, concat all subjects into single tmp txt file (this will create n txt lists for n ROIs) using 1dcat
-- these files will go to connmat directory
-- then use 3dTstat to get the average
+# ------------------ concatenate 1D time-series for each roi --------------------------
+# : 'this will create n .txt files for n ROIs; each .txt file will have y columns for y subjects'
+echo "++ concatenating 1D time-series across subjects for each roi"
+firstsub=$(head -n 1 $data_dir/$flist)       #find first sub
+iroi=`cat $data_dir/$firstsub/${tpref}_roi_mask_list.txt `     #index temp list of rois
+for roi in ${iroi[@]}; do 
+    echo "processing $roi" 
+    input=`ls $data_dir/*/1d_files/*_${roi}.1D`
+    1dcat $input > $mat_out_dir/${tpref}_${topref}_${roi}.1D
+done
+
+# ------------------ compute average time-series for each roi --------------------------
+source python file
 
 
-
-ls roi_mask_* > ${tpref}_roi_mask_list.txt
-sed -e 's!.nii.gz!!' ${tpref}_roi_mask_list.txt > ${tpref}_roi_mask_list2.txt
-rm -rf ${tpref}_roi_mask_list.txt; mv ${tpref}_roi_mask_list2.txt ${tpref}_roi_mask_list.txt
-
-# ------------------ create 1D time-series for each ROI --------------------------
-
+#3dTstat -mean -prefix $mat_out_dir/${opref}_${roi}.txt $mat_out_dir/${tpref}_${topref}_${roi}
+#alternatively use pandas or scipy or numpy
 
 # ------------------ clean up --------------------------
-
+#rm -rf ${tpref}*
 
 echo "++ 1d_handler.sh done"
 exit 0

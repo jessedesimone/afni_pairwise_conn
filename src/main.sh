@@ -162,6 +162,8 @@ do
             fi
         fi
 
+        sleep 2
+
         #==========1d file creation==========
         echo "==========1d file creation=========="
         : 'run 1d_creator.sh'
@@ -195,14 +197,18 @@ do
     fi
 
 cd $pkg_dir
+done
+
+sleep 2
 
 #==========1d file handling==========
+echo "==========1d file handling=========="
 : 'run 1d_handler.sh'
 : 'run script if connmat outfile does not exist '
-
+tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
 
 
 
 
 echo "++ main.sh finished"
-done
+
