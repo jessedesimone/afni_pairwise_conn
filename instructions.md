@@ -50,6 +50,7 @@ touch data/id_subj
 - runs src/roi_setup.tcsh to create masks for each roi
 - runs src/roi_map.tcsh to create final_roi_map.*
 - runs src/netcorr.tcsh to create whole-brain voxelwise z-score corrrelation maps, matrix files and correlation plots
+- runs src/1d_creator.sh to create 1D time-series files for each roi for each subject
 
 
 

@@ -163,6 +163,7 @@ do
         fi
 
         #==========1d file creation==========
+        echo "==========1d file creation=========="
         : 'run 1d_creator.sh'
         : 'run script if outdir does not exist '
         if [ ! -d "1d_files" ]; then
@@ -192,5 +193,16 @@ do
         echo "terminating script" 2>&1 | tee -a $log_file
         exit 1
     fi
+
+cd $pkg_dir
+
+#==========1d file handling==========
+: 'run 1d_handler.sh'
+: 'run script if connmat outfile does not exist '
+
+
+
+
+
 echo "++ main.sh finished"
 done
