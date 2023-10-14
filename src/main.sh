@@ -204,15 +204,14 @@ sleep 2
 #==========1d file handling==========
 echo "==========1d file handling=========="
 : 'run 1d_handler.sh'
-: 'run script if connmat outfile does not exist '
-if [ ! -d "connmat" ]; then
-    tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
-else
-    : 'if outdir does exist...|
-    overwrite protection'
-
-
-#WORKING HERE
+outfile=${mat_out_dir}'/final_matrix_input.csv'
+if [[ ! -d $mat_out_dir ]] || [[ ! -f $outfile ]]; then
+    : 'run script if connmat outfile does not exist '
+    #tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
+elif [ -f $outfile ]; then
+    : 'if outfile exists run column check to confirm correct number of rois'
+    #WORKING HERE
+fi
 
 
 echo "++ main.sh finished"

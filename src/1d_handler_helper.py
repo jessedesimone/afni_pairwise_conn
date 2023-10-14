@@ -75,6 +75,6 @@ for f in files:
 #save dataframe as csv
 print(df_concat.info(), df_concat)
 fopref='final_matrix_input'
-df_concat.to_csv(fopref + '.csv')
+df_concat.to_csv(fopref + '.csv', index=False)
 
 print('++ 1d_handler_helper.py done')

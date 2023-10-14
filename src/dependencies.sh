@@ -16,3 +16,4 @@ else
     echo >&2 "matplotlib is not installed | Aborting "
     exit 1
 fi
+# NEED TO ADD OTHER PYTHON DEPENDENCIES
