@@ -205,9 +205,14 @@ sleep 2
 echo "==========1d file handling=========="
 : 'run 1d_handler.sh'
 : 'run script if connmat outfile does not exist '
-tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
+if [ ! -d "connmat" ]; then
+    tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
+else
+    : 'if outdir does exist...|
+    overwrite protection'
 
 
+#WORKING HERE
 
 
 echo "++ main.sh finished"

@@ -12,7 +12,6 @@ flist='id_subj'
 isub=`cat ${data_dir}/$flist`
 tpref='_tmp'
 topref='all_subs'
-opref='mean'
 
 # ------------------ concatenate 1D time-series for each roi --------------------------
 # : 'this will create n .txt files for n ROIs; each .txt file will have y columns for y subjects'
@@ -22,18 +21,14 @@ iroi=`cat $data_dir/$firstsub/${tpref}_roi_mask_list.txt `     #index temp list 
 for roi in ${iroi[@]}; do 
     echo "processing $roi" 
     input=`ls $data_dir/*/1d_files/*_${roi}.1D`
-    1dcat $input > $mat_out_dir/${tpref}_${topref}_${roi}.1D
+    1dcat -csvout $input > $mat_out_dir/${tpref}_${topref}_${roi}.csv
 done
 
-# ------------------ compute average time-series for each roi --------------------------
-source python file
-
-
-#3dTstat -mean -prefix $mat_out_dir/${opref}_${roi}.txt $mat_out_dir/${tpref}_${topref}_${roi}
-#alternatively use pandas or scipy or numpy
+# ------------------ enter python and handle csv files --------------------------
+python3.9 1d_handler_helper.py
 
 # ------------------ clean up --------------------------
-#rm -rf ${tpref}*
+rm -rf $mat_out_dir/${tpref}*
 
 echo "++ 1d_handler.sh done"
 exit 0
