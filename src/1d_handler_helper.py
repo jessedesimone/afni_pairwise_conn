@@ -27,6 +27,8 @@ def mean_calc():
 print("++ computing average time-series across subjects for each roi")
 '''find all files'''
 files = glob.glob('_tmp_all_subs_roi_mask_*.csv')
+files.sort()
+print(files)
 print("finding files")
 '''compute the mean for each row of dataframe and replace infile with new file'''
 count=1
