@@ -196,9 +196,9 @@ do
         exit 1
     fi
 
-cd $pkg_dir
 done
 
+cd $src_dir
 sleep 2
 
 #==========1d file handling==========
@@ -207,12 +207,22 @@ echo "==========1d file handling=========="
 outfile=${mat_out_dir}'/final_matrix_input.csv'
 if [[ ! -d $mat_out_dir ]] || [[ ! -f $outfile ]]; then
     : 'run script if connmat outfile does not exist '
-    #tcsh -c ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
+    source ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
 elif [ -f $outfile ]; then
     : 'if outfile exists run column check to confirm correct number of rois'
-    #WORKING HERE
+    roi_in=$(grep -c ".*" ${ref_dir}/roi_centers.txt)
+    echo "++ number of ROIs = $roi_in" 2>&1 | tee -a $log_file
+    roi_in=$((roi_in))
+    roi_out=$(head -1 $outfile | sed 's/[^,]//g' | wc -c)
+    roi_out=$((roi_out))
+    if [ "$roi_in" -eq "$roi_out" ]; then
+        echo "outfile already exist | skipping step" 2>&1 | tee -a $log_file
+    else
+        echo "++ !!! OVERWRITING EXISTING DATASET | final matrix input !!!" 2>&1 | tee -a $log_file
+        rm -rf 1d_files/${sub}_roi_mask_*.1D
+        source ${src_dir}/1d_handler.sh 2>&1 | tee -a $log_file
+    fi
 fi
-
 
 echo "++ main.sh finished"
 
