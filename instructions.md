@@ -1,5 +1,5 @@
 # Instructions
-## Clone git repository & configure directories
+## clone git repository
 - fork repository to your GitHub account and clone repository to local machine <br/> 
 ```bash
 git clone git@github.com:*username*/afni_pairwise_conn.git
@@ -14,13 +14,13 @@ git clone git@github.com:*username*/afni_pairwise_conn.git
 - error time series file should be aligned to standard MNI space (I used the MNI152_T1 template)
 
 ## setup
-### Configure python virtual environment
+### configure python virtual environment
 - this package includes python source code from afni and other python modules
 - matplotlib and pandas packages must be installed in your python environment
 - [dependencies.sh](./src/dependencies.sh) script will check that matplotlib is installed and will exit if not
 - install packages
 ```bash 
-pip install *package*
+pip install <"package name">
 ```
 - activation of python environment is built into [main.sh](./src/main.sh) configuration so update as needed
 - on my system, the source code to activate the env is:
