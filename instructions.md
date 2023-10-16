@@ -29,7 +29,7 @@ source ~/env/bin/activate
 ```
 
 ### reference lists
-- in reference directory, create (or update existing) two text files: (1) [roi_labels.txt](./reference/roi_labels.txt.sh); and (2) [roi_centers.txt](./reference/roi_centers.txt.sh)
+- in reference directory, create (or update existing) two text files: (1) [roi_labels.txt](./reference/roi_labels.txt); and (2) [roi_centers.txt](./reference/roi_centers.txt)
 - roi_labels.txt: two columns: (1) roi number (i.e., 1..n); and (2) label (e.g., RH_DefaultA_pCunPCC)
 - roi_centers.txt: 3 columns representing (x,y,z) MNI coordinates and LPI (i.e., left=left) orientation for the corresponding ROI in roi_labels.txt (row 1 in roi_centers.txt corresponds to row 1 in roi_labels.txt)
 - see reference directory for example (MNI coordinates for Yeo 17 network parcellation connectivity atlas) https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/README.md
@@ -61,18 +61,5 @@ ls sub* > data_proc/id_subj
 - runs src/1d_handler.sh and src/handler_helper.py to create average time-series files for each roi (averaged across subjects at each TR) and produce a final csv file for creating correlation matrix plot
 - runs corrmat.py to produce final correlation matrix plot (see images directory for reference image)
 
-
-
-
-
-
-
-
-
-## analysis
-- compute partial correlation matrix between average time series foir each network (17 total connectivity matrices)
-- mantel_test() in python to compare correlation matrices if needed
-- use CONN toolbox to compare network connectivity between two or more groups and generate figures
-
-partial correlation matrix in R
-https://towardsdatascience.com/keeping-an-eye-on-confounds-a-walk-through-for-calculating-a-partial-correlation-matrix-2ac6b831c5b6
+## additional notes
+- properties of final correlation matrix can be adjusted in [helpers.py](./src/helpers.py)
