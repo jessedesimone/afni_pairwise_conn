@@ -224,5 +224,11 @@ elif [ -f $outfile ]; then
     fi
 fi
 
+#==========plot correlation matrix==========
+echo "==========plotting and saving final correlation matrix=========="
+: 'run corrmat.py'
+outfile=${mat_out_dir}'/group_corrmat.jpg'
+
+
 echo "++ main.sh finished"
 

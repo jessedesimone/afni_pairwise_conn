@@ -33,6 +33,7 @@ source ~/env/bin/activate
 - roi_labels.txt: two columns: (1) roi number (i.e., 1..n); and (2) label (e.g., RH_DefaultA_pCunPCC)
 - roi_centers.txt: 3 columns representing (x,y,z) MNI coordinates and LPI (i.e., left=left) orientation for the corresponding ROI in roi_labels.txt (row 1 in roi_centers.txt corresponds to row 1 in roi_labels.txt)
 - see reference directory for example (MNI coordinates for Yeo 17 network parcellation connectivity atlas) https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/README.md
+- for best visualization of final outfile, it is best to cluster ROIs from the same large-scale network (e.g., default mode, salience, etc.) together in roi_labels.txt
 
 ### data
 - in the data directory, create a sub-directory for each subject 
@@ -57,7 +58,7 @@ ls sub* > data_proc/id_subj
 - runs src/roi_map.tcsh to create final_roi_map.*
 - runs src/netcorr.tcsh to create whole-brain voxelwise z-score corrrelation maps, matrix files and correlation plots
 - runs src/1d_creator.sh to create 1D time-series files for each roi for each subject
-- runs src/1d_handler.sh and src/1d_handler_helper.py to create average time-series files for each roi (averaged across subjects at each TR) and produce a final csv file for computing 
+- runs src/1d_handler.sh and src/handler_helper.py to create average time-series files for each roi (averaged across subjects at each TR) and produce a final csv file for computing 
 
 
 
