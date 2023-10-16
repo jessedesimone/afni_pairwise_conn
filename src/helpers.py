@@ -808,7 +808,7 @@ import matplotlib.pyplot as plt
 
 # set RC parameters
 ex={
-    'figure.titlesize':   12,     
+    'figure.titlesize':   10,     
     'figure.titleweight': 'bold',
     'font.sans-serif': ['Arial'],
     'figure.edgecolor':   'black',
@@ -820,11 +820,15 @@ ex={
 #invoke RC params
 sns.set_theme(style='white', rc=ex)
 
-def corrmap(data, meth, title):
+def corrmap(data, meth, sup, title):
     ax = plt.subplot()
     cor = data.corr(method=meth)
-    plt.title(title)
+    plt.suptitle(sup)
+    plt.title(title, fontdict={'fontsize': 8})
     sns.heatmap(cor, vmax=1, annot=False, cmap=sns.color_palette("coolwarm", 20))
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    plt.tight_layout()
     plt.savefig('../connmat/grp_corrplot.jpg')
     return plt.show()

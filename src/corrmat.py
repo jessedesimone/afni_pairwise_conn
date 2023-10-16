@@ -20,7 +20,7 @@ roi_list=df_roi.roi_label.values.tolist()
 df=df.set_axis([roi_list], axis="columns")
 
 #plot correlation heatmap
-corrmap(df, 'pearson', 'Group Correlation Matrix')
+corrmap(df, 'pearson', 'Group Correlation Matrix', 'ROI-to-ROI Connectivity')
 
 print('final output matrix is ./connmat/grp_corrplot.jpg')
 print('++corrmat.py done')
