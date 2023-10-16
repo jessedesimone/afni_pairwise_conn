@@ -201,7 +201,7 @@ done
 cd $src_dir
 sleep 2
 
-#==========1d file handling==========
+#==========1d file handling & correlation matrix==========
 echo "==========1d file handling=========="
 : 'run 1d_handler.sh'
 outfile=${mat_out_dir}'/final_matrix_input.csv'
@@ -224,6 +224,8 @@ elif [ -f $outfile ]; then
     fi
 fi
 
+sleep 2
+
 #==========plot correlation matrix==========
 echo "==========plotting and saving final correlation matrix=========="
 : 'run corrmat.py'
@@ -234,11 +236,9 @@ if [ ! -f ${mat_out_dir}'/group_corrmat.jpg' ]; then
     python3 corrmat.py
     rm -rf ${ref_dir}/_tmp_roi_labels_corrmat.txt       #remove tmp file
 else
-
-    ##WORKING HERE: INPUT CONTINGENCY STATEMENT
-
+    echo "$outfile already exists"
+    echo "please remove existing file and re-run main.sh"
 fi
-
 
 echo "++ main.sh finished"
 
