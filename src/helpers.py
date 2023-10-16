@@ -811,7 +811,6 @@ ex={
     'figure.titlesize':   10,     
     'figure.titleweight': 'bold',
     'font.sans-serif': ['Arial'],
-    'figure.edgecolor':   'black',
     'figure.dpi': 300,
     'xtick.labelsize': 5,
     'ytick.labelsize': 5
