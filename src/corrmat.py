@@ -3,22 +3,18 @@
 #import packages
 import os
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from handler_helper import data_reader
+from helpers import *
 
-os.chdir('../connmat')
-df=data_reader('final_matrix_input.csv')
+#read data
+#os.chdir('../connmat')
+df=pd.read_csv('../connmat/final_matrix_input.csv')
+df_roi=pd.read_csv('../reference/_tmp_roi_labels_corrmat.txt', names=['roi_label'])
 
-#plot heatmap
-sns.set_context('paper')
-f, ax = plt.subplots(figsize=(20, 15))
-cor = df.corr(method='pearson')
-plt.title('Group Correlation Matrix', weight='bold', fontsize=16)
-ax = sns.heatmap(cor, vmax=1, annot=False, cmap=sns.color_palette("coolwarm", 20))
-ax.set_xticklabels(
-    ax.get_xticklabels(),
-    rotation=45,
-    horizontalalignment='right')
-# plt.savefig('CorrMat.png')
-plt.show()
+#convert df_roi to list
+roi_list=df_roi.roi_label.values.tolist()
+
+#replace column headers with original labels
+df=df.set_axis([roi_list], axis="columns")
+
+#plot correlation heatmap
+corrmap(df, 'pearson', 'Group Correlation Matrix')

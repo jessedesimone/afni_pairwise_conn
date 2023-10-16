@@ -25,7 +25,7 @@ for roi in ${iroi[@]}; do
 done
 
 # ------------------ enter python and handle csv files --------------------------
-python3.9 handler_helper.py
+python3 handler_helper.py
 
 # ------------------ clean up --------------------------
 rm -rf $mat_out_dir/${tpref}*

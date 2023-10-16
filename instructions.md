@@ -58,7 +58,9 @@ ls sub* > data_proc/id_subj
 - runs src/roi_map.tcsh to create final_roi_map.*
 - runs src/netcorr.tcsh to create whole-brain voxelwise z-score corrrelation maps, matrix files and correlation plots
 - runs src/1d_creator.sh to create 1D time-series files for each roi for each subject
-- runs src/1d_handler.sh and src/handler_helper.py to create average time-series files for each roi (averaged across subjects at each TR) and produce a final csv file for computing 
+- runs src/1d_handler.sh and src/handler_helper.py to create average time-series files for each roi (averaged across subjects at each TR) and produce a final csv file for creating correlation matrix plot
+- runs corrmat.py to produce final correlation matrix plot (see images directory for reference image)
+
 
 
 
