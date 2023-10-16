@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
+'''module to create final correlation matrix plot'''
+
+print('++running corrmat.py')
+
 #import packages
 import os
 import pandas as pd
 from helpers import *
 
 #read data
-#os.chdir('../connmat')
 df=pd.read_csv('../connmat/final_matrix_input.csv')
 df_roi=pd.read_csv('../reference/_tmp_roi_labels_corrmat.txt', names=['roi_label'])
 
@@ -18,3 +21,6 @@ df=df.set_axis([roi_list], axis="columns")
 
 #plot correlation heatmap
 corrmap(df, 'pearson', 'Group Correlation Matrix')
+
+print('final output matrix is ./connmat/grp_corrplot.jpg')
+print('++corrmat.py done')
