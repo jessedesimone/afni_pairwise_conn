@@ -8,7 +8,7 @@ import pandas as pd
 import glob
 import fnmatch
 
-os.chdir('../connmat')
+os.chdir('../corrmat')
 
 #define data reader
 def data_reader(fname):

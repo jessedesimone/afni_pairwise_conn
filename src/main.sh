@@ -235,7 +235,7 @@ if [ ! -f ${mat_out_dir}'/group_corrmat.jpg' ]; then
     awk '{ print $2 }' ${ref_dir}/roi_labels.txt > ${ref_dir}/_tmp_roi_labels_corrmat.txt     #create tmp txt file of roi_labels
     awk '{ print $2 }' ${ref_dir}/roi_labels.txt > ${ref_dir}/_tmp_roi_labels_corrmat.csv     #create tmp txt file of roi_labels    
     python3 corrmat.py
-    rm -rf ${ref_dir}/_tmp_roi_labels_corrmat.txt       #remove tmp file
+    rm -rf ${ref_dir}/_tmp_roi_labels_corrmat.*       #remove tmp file
 else
     echo "$outfile already exists"
     echo "please remove existing file and re-run main.sh"

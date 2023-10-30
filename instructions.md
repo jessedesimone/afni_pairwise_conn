@@ -50,8 +50,9 @@ ls sub* > data_proc/id_subj
 ```
 
 ## run main.sh driver
+- navigate to src directory
 ```bash
-./src/main.sh
+./main.sh
 ```
 - script will loop through each subject
 - runs src/roi_setup.tcsh to create masks for each roi

@@ -829,5 +829,5 @@ def corrmap(data, meth, sup, title):
     ax.set_xlabel('')
     ax.set_ylabel('')
     plt.tight_layout()
-    plt.savefig('../connmat/grp_corrplot.jpg')
+    plt.savefig('../corrmat/grp_corrplot.jpg')
     return plt.show()
